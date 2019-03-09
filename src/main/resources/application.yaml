@@ -1,0 +1,4 @@
+dialogflow:
+  projectName: ${DIALOGFLOW-PROJECT-ID}
+  languageCode: "pt-BR"
+  credentialsPath: ${GOOGLE_APPLICATION_CREDENTIALS}
