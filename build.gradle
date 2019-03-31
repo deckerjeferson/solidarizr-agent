@@ -38,7 +38,6 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.google.cloud:google-cloud-dialogflow:0.82.0-alpha'
 	implementation 'com.github.pengrad:java-telegram-bot-api:4.1.1'
 	compileOnly 'org.projectlombok:lombok:1.18.6'
 	annotationProcessor 'org.projectlombok:lombok:1.18.6'
