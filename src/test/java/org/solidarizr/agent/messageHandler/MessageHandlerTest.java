@@ -23,7 +23,16 @@ public class MessageHandlerTest {
 
     @Test
     public void receive_greeting_message_and_respond_with_greeting(){
-        assertThat(messageHandler.handle("Oi!")).isEqualTo("Olá!");
+        HandledMessage expected = HandledMessage.builder()
+                .text("Olá! \nVocê gostaria de procurar um projeto voluntário?")
+                .keyboard(HandledMessage.Keyboard.builder()
+                            .option("Sim, gostaria de procurar projetos voluntários!")
+                            .option("Não, me deixa em paz!")
+                            .build()
+                ).build();
+
+        HandledMessage handledMessage = messageHandler.handle("Oi!");
+        assertThat(handledMessage).isEqualTo(expected);
     }
 
 }

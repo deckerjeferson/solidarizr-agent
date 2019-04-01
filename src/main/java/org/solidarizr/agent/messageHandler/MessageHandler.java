@@ -18,9 +18,9 @@ public class MessageHandler {
         this.intentHandler = intentHandler;
     }
 
-    public String handle(String message){
+    public HandledMessage handle(String message){
         Intent messageIntent = intentDiscover.discoverIntent(message);
-        String responseMessage = intentHandler.getResponseBasedOnIntent(messageIntent);
+        HandledMessage responseMessage = intentHandler.getResponseBasedOnIntent(messageIntent);
 
         return responseMessage;
     }
