@@ -26,6 +26,14 @@ public class IntentHandlerTest {
     }
 
     @Test
+    public void respond_start_message_when_receive_start_intent(){
+        HandledMessage greetingsHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.START);
+
+        assertThat(greetingsHandledMessage.getText()).isEqualTo("Olá! \nEu sou o Solidarize! :D\n Estou aqui para te ajudar a encontrar um projeto voluntário que tenha a sua cara! :) \n Você gostaria de procurar um projeto voluntário?");
+        assertThat(greetingsHandledMessage.getKeyboard().getOptions()).containsExactly("Sim, gostaria de procurar projetos voluntários!", "Não, me deixa em paz!");
+    }
+
+    @Test
     public void respond_not_understood_message_when_unknown_intent(){
         HandledMessage unknownHandledMessaged = intentHandler.getResponseBasedOnIntent(Intent.UNKNOWN);
         assertThat(unknownHandledMessaged.getText()).isEqualTo("Desculpe, não entendi o que você falou.");

@@ -22,6 +22,11 @@ public class IntentDiscoverTest {
     }
 
     @Test
+    public void find_start_intent_from_start_message(){
+        assertThat(intentDiscover.discoverIntent("/start")).isEqualTo(Intent.START);
+    }
+
+    @Test
     public void return_unknownIntent_from_unidentifiable_message(){
         assertThat(intentDiscover.discoverIntent("ASDLKASJDLASJDÇLASJDASJ")).isEqualTo(Intent.UNKNOWN);
     }

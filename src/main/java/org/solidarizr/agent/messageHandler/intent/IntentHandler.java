@@ -14,6 +14,15 @@ public class IntentHandler {
         }
 
         switch (intent){
+            case START:
+                responseMessage = HandledMessage.builder()
+                        .text("Olá! \nEu sou o Solidarize! :D\n Estou aqui para te ajudar a encontrar um projeto voluntário que tenha a sua cara! :) \n Você gostaria de procurar um projeto voluntário?")
+                        .keyboard(HandledMessage.Keyboard.builder()
+                                .option("Sim, gostaria de procurar projetos voluntários!")
+                                .option("Não, me deixa em paz!")
+                                .build())
+                        .build();
+                break;
             case GREETING:
                 responseMessage = HandledMessage.builder()
                         .text("Olá! \nVocê gostaria de procurar um projeto voluntário?")
