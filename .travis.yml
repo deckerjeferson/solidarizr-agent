@@ -1,5 +1,5 @@
 language: java
-jdk: oraclejdk11
+jdk: openjdk11
 deploy:
   provider: heroku
   app: solidarizr-agent
