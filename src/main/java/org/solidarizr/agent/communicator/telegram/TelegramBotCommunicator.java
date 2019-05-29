@@ -40,7 +40,7 @@ public class TelegramBotCommunicator {
                 log.info("Handled Message to SendMessage");
                 SendMessage sendMessage = HandledMessageToSendMessageTransformer.transform(update.message().chat().id(), response);
                 bot.execute(sendMessage);
-                //bot.execute(new SendMessage(update.message().chat().id(), "bla bla bla"));
+                //bot.execute(new SendMessage(update.message().Chat().id(), "bla bla bla"));
             });
 
             // return id of last processed update or confirm them all
