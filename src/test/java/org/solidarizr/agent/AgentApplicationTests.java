@@ -15,5 +15,4 @@ public class AgentApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-
 }
