@@ -8,15 +8,12 @@ import java.util.List;
 @Component
 public class IntentDiscover {
 
-    public static final String START = "/start";
-    List<String> possibleGreetings = Arrays.asList("Oi!");
-
     public Intent discoverIntent(String message) {
         Intent intent;
 
-        if(possibleGreetings.contains(message)){
+        if(Intent.GREETING.getMessage().contains(message)){
             intent = Intent.GREETING;
-        } else if (START.equals(message)){
+        } else if (Intent.START.getMessage().equals(message)){
             intent = Intent.START;
         } else {
             intent = Intent.UNKNOWN;
