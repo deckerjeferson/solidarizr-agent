@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Value
+@Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TargetAudience {
     private Integer id;

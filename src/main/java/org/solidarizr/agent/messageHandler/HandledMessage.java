@@ -3,6 +3,7 @@ package org.solidarizr.agent.messageHandler;
 import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Value
 @Builder
@@ -17,5 +18,12 @@ public class HandledMessage {
 
         @Singular
         private List<String> options;
+
+        @Value
+        @Builder
+        public static class Option{
+            private Integer id;
+            private String option;
+        }
     }
 }
