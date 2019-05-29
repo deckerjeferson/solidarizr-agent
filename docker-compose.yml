@@ -1,0 +1,13 @@
+version: "3"
+services:
+  solidarizr-db:
+    image: postgres:9.6
+    container_name: "postgres"
+    environment:
+      - POSTGRES_DBgent
+      - POSTGRES_USER=postgres
+      - TZ=GMT
+    volumes:
+      - "./data/postgres:/var/lib/postgresql/data"
+    ports:
+      - 5432:5432
