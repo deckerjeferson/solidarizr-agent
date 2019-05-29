@@ -31,4 +31,9 @@ public class IntentDiscoverTest {
         assertThat(intentDiscover.discoverIntent("ASDLKASJDLASJDÇLASJDASJ")).isEqualTo(Intent.UNKNOWN);
     }
 
+    @Test
+    public void return_ask_categories_from_want_to_find_project_callback(){
+        assertThat(intentDiscover.discoverIntent("asking_categories")).isEqualTo(Intent.ASK_CATEGORIES);
+    }
+
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public enum  Intent {
-    START("/start"), GREETING("Oi!"), UNKNOWN;
+    START("/start"), GREETING("Oi!"), UNKNOWN, ASK_CATEGORIES("asking_categories");
 
     private String message;
 

@@ -34,13 +34,32 @@ public class TelegramBotCommunicator {
         log.info("Started to Listen to Telegram :)");
         bot.setUpdatesListener(updates -> {
             updates.forEach(update -> {
-                log.info("Handling message");
-                HandledMessage response = messageHandler.handle(update.message().text());
 
-                log.info("Handled Message to SendMessage");
-                SendMessage sendMessage = HandledMessageToSendMessageTransformer.transform(update.message().chat().id(), response);
-                bot.execute(sendMessage);
-                //bot.execute(new SendMessage(update.message().Chat().id(), "bla bla bla"));
+                try {
+                    log.info("Handling message");
+
+                    String message;
+                    Long chatId;
+
+                    if (update.message() == null) {
+                        message = update.callbackQuery().data();
+                        chatId = update.callbackQuery().message().chat().id();
+                    } else {
+                        chatId = update.message().chat().id();
+                        message = update.message().text();
+                    }
+
+                    HandledMessage response = messageHandler.handle(chatId, message);
+
+                    log.info("Handled Message to SendMessage");
+                    SendMessage sendMessage = HandledMessageToSendMessageTransformer.transform(chatId, response);
+                    bot.execute(sendMessage);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage());
+
+                    bot.execute(new SendMessage(update.message().chat().id(), "Ocorreu algum problema, tenta depois, plz! :)"));
+                }
+
             });
 
             // return id of last processed update or confirm them all

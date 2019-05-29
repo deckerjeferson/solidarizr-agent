@@ -1,9 +1,7 @@
-package org.solidarizr.agent.repository.model;
+package org.solidarizr.agent.chat.repository.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.solidarizr.agent.messageHandler.intent.Intent;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,14 +10,15 @@ import java.util.Date;
 @Entity
 @Builder
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Chat {
 
     @Id
-    Integer id;
+    Long id;
 
-    String last_intent;
+    Intent last_intent;
 
     Date last_interaction;
 

@@ -1,18 +1,17 @@
 package org.solidarizr.agent.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.solidarizr.agent.chat.repository.ChatRepository;
 import org.solidarizr.agent.messageHandler.intent.Intent;
-import org.solidarizr.agent.repository.model.Chat;
+import org.solidarizr.agent.chat.repository.model.Chat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
@@ -27,8 +26,8 @@ public class ChatRepositoryIntegrationTest {
     @Autowired
     ChatRepository repository;
 
-    Chat entity = Chat.builder().id(12345)
-            .last_intent(Intent.START.name())
+    Chat entity = Chat.builder().id(12345L)
+            .last_intent(Intent.START)
             .last_interaction(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
             .build();
 

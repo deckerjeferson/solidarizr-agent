@@ -15,7 +15,9 @@ public class IntentDiscover {
             intent = Intent.GREETING;
         } else if (Intent.START.getMessage().equals(message)){
             intent = Intent.START;
-        } else {
+        } else if (Intent.ASK_CATEGORIES.getMessage().equals(message)){
+            intent = Intent.ASK_CATEGORIES;
+        }else {
             intent = Intent.UNKNOWN;
         }
 

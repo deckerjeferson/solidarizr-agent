@@ -33,6 +33,16 @@ public class IntentHandler {
                         .build();
                 break;
 
+            case ASK_CATEGORIES:
+                responseMessage = HandledMessage.builder()
+                        .text("Legal! Pode selecionar abaixo o tipo de projeto que mais te interessa! :)")
+                        .keyboard(HandledMessage.Keyboard.builder()
+                                .option("Sim, gostaria de procurar projetos voluntários!")
+                                .option("Não, me deixa em paz!")
+                                .build())
+                        .build();
+                break;
+
             case UNKNOWN:
                 responseMessage = HandledMessage.builder()
                         .text("Desculpe, não entendi o que você falou.")
@@ -42,7 +52,6 @@ public class IntentHandler {
             default:
                 throw new UnsupportedIntent(intent);
         }
-
         return responseMessage;
     }
 }
