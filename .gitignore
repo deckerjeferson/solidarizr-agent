@@ -286,3 +286,7 @@ gradle-app.setting
 # End of https://www.gitignore.io/api/git,java,macos,linux,gradle,eclipse,windows,intellij+all
 
 .java-version
+
+#local properties
+src/main/resources/application-local.properties
+data/*
