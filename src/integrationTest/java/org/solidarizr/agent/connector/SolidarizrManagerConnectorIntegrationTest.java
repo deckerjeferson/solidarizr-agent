@@ -2,6 +2,7 @@ package org.solidarizr.agent.connector;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.solidarizr.agent.connector.model.Category;
 import org.solidarizr.agent.connector.model.TargetAudience;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +24,13 @@ public class SolidarizrManagerConnectorIntegrationTest {
     @Test
     public void get_all_target_audiences(){
         List<TargetAudience> result = solidarizrManagerConnector.getAllTargetAudiences();
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    public void get_all_categories(){
+        List<Category> result = solidarizrManagerConnector.getAllCategories();
 
         assertThat(result).isNotNull();
     }

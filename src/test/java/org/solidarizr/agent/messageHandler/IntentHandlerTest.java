@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.solidarizr.agent.connector.SolidarizrManagerConnector;
+import org.solidarizr.agent.connector.model.Category;
 import org.solidarizr.agent.connector.model.TargetAudience;
 import org.solidarizr.agent.messageHandler.intent.Intent;
 import org.solidarizr.agent.messageHandler.intent.IntentHandler;
@@ -65,6 +66,28 @@ public class IntentHandlerTest {
         HandledMessage askTargetAudienceHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.ASK_TARGET_AUDIENCE);
 
         assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Intent.ASK_TARGET_AUDIENCE.getResponse());
+        assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions().size()).isEqualTo(3);
+        assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions()).isEqualTo(expectedOptions);
+    }
+
+    @Test
+    public void respond_ask_categories_message_when_recebei_ask_category_audience_intent(){
+        Category categoryToBeCoverted1 = Category.builder().id(1).name("Category 1").build();
+        Category categoryToBeCoverted2 = Category.builder().id(2).name("Category 2").build();
+        List<Category> categories = List.of(categoryToBeCoverted1, categoryToBeCoverted2);
+
+        when(solidarizrManagerConnector.getAllCategories()).thenReturn(categories);
+
+        List<HandledMessage.Keyboard.Option> expectedOptions = List.of(HandledMessage.Keyboard.Option.builder()
+                        .id(categoryToBeCoverted1.getId().toString())
+                        .option(categoryToBeCoverted1.getName()).build(),
+                HandledMessage.Keyboard.Option.builder()
+                        .id(categoryToBeCoverted2.getId().toString())
+                        .option(categoryToBeCoverted2.getName()).build());
+
+
+        HandledMessage askTargetAudienceHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.ASK_CATEGORIES);
+        assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Intent.ASK_CATEGORIES.getResponse());
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions().size()).isEqualTo(2);
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions()).isEqualTo(expectedOptions);
     }

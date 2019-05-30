@@ -1,6 +1,7 @@
 package org.solidarizr.agent.messageHandler.intent.transformers;
 
 import org.junit.Test;
+import org.solidarizr.agent.connector.model.Category;
 import org.solidarizr.agent.connector.model.TargetAudience;
 import org.solidarizr.agent.messageHandler.HandledMessage;
 
@@ -46,5 +47,45 @@ public class KeyboardOptionTransformerTest {
         HandledMessage.Keyboard.Option result = KeyboardOptionTransformer.fromTargetAudience(targetAudience);
 
         assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    public void from_category(){
+        Category category = Category.builder()
+                .id(1)
+                .name("Category 1").build();
+
+        HandledMessage.Keyboard.Option expected = HandledMessage.Keyboard.Option.builder()
+                .id("1")
+                .option("Category 1").build();
+
+        HandledMessage.Keyboard.Option result = KeyboardOptionTransformer.fromCategory(category);
+
+        assertThat(result).isEqualTo(expected);
+
+    }
+
+    @Test
+    public void from_category_list(){
+        Category category1 = Category.builder()
+                .id(1)
+                .name("Category 1").build();
+
+        Category category2 = Category.builder()
+                .id(2)
+                .name("Category 2").build();
+
+        HandledMessage.Keyboard.Option expectedOption1 = HandledMessage.Keyboard.Option.builder()
+                .id("1")
+                .option("Category 1").build();
+
+        HandledMessage.Keyboard.Option expectedOption2 = HandledMessage.Keyboard.Option.builder()
+                .id("2")
+                .option("Category 2").build();
+
+        List<HandledMessage.Keyboard.Option> result = KeyboardOptionTransformer.fromCategoryList(List.of(category1, category2));
+
+        assertThat(result).isEqualTo(List.of(expectedOption1, expectedOption2));
+
     }
 }

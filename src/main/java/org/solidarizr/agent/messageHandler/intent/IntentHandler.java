@@ -1,6 +1,7 @@
 package org.solidarizr.agent.messageHandler.intent;
 
 import org.solidarizr.agent.connector.SolidarizrManagerConnector;
+import org.solidarizr.agent.connector.model.Category;
 import org.solidarizr.agent.connector.model.TargetAudience;
 import org.solidarizr.agent.messageHandler.HandledMessage;
 import org.solidarizr.agent.messageHandler.intent.transformers.KeyboardOptionTransformer;
@@ -50,12 +51,24 @@ public class IntentHandler {
 
             case ASK_TARGET_AUDIENCE:
                 List<TargetAudience> targetAudienceList = solidarizrManagerConnector.getAllTargetAudiences();
-                List<HandledMessage.Keyboard.Option> options = KeyboardOptionTransformer.fromTargetAudienceList(targetAudienceList);
+                List<HandledMessage.Keyboard.Option> targetAudienceOptions = KeyboardOptionTransformer.fromTargetAudienceList(targetAudienceList);
 
                 responseMessage = HandledMessage.builder()
                         .text(ASK_TARGET_AUDIENCE.getResponse())
                         .keyboard(HandledMessage.Keyboard.builder()
-                                .options(options)
+                                .options(targetAudienceOptions)
+                                .build())
+                        .build();
+                break;
+
+            case ASK_CATEGORIES:
+                List<Category> categories = solidarizrManagerConnector.getAllCategories();
+                List<HandledMessage.Keyboard.Option> categoriesOption = KeyboardOptionTransformer.fromCategoryList(categories);
+
+                responseMessage = HandledMessage.builder()
+                        .text(ASK_CATEGORIES.getResponse())
+                        .keyboard(HandledMessage.Keyboard.builder()
+                                .options(categoriesOption)
                                 .build())
                         .build();
                 break;
@@ -69,6 +82,7 @@ public class IntentHandler {
             default:
                 throw new UnsupportedIntent(intent);
         }
+
         return responseMessage;
     }
 }

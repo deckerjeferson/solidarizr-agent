@@ -2,7 +2,7 @@ package org.solidarizr.agent.communicator.telegram;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
-import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
+import com.pengrad.telegrambot.request.EditMessageText;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,10 +37,12 @@ public class TelegramBotCommunicator {
 
                 String message;
                 Long chatId;
+                Integer messageId = null;
 
                 if (update.message() == null) {
                     message = update.callbackQuery().data();
                     chatId = update.callbackQuery().message().chat().id();
+                    messageId = update.callbackQuery().message().messageId();
                 } else {
                     chatId = update.message().chat().id();
                     message = update.message().text();
@@ -49,12 +51,18 @@ public class TelegramBotCommunicator {
                 try {
                     log.info("Handling message");
 
-
                     HandledMessage response = messageHandler.handle(chatId, message);
 
                     log.info("Handled Message to SendMessage");
-                    SendMessage sendMessage = HandledMessageToSendMessageTransformer.transform(chatId, response);
-                    bot.execute(sendMessage);
+                    if(messageId != null){
+                        EditMessageText editMessageText = HandledMessageToMessageTransformer.transform(chatId, response, messageId);
+                        bot.execute(editMessageText);
+                    } else {
+                        SendMessage sendMessage = HandledMessageToMessageTransformer.transform(chatId, response);
+                        bot.execute(sendMessage);
+                    }
+
+
                 } catch (Exception ex) {
                     log.error(ex.getMessage());
 

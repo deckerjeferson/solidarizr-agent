@@ -6,7 +6,7 @@ import org.solidarizr.agent.messageHandler.HandledMessage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HandledMessageToSendMessageTransformerTest {
+public class HandledMessageToMessageTransformerTest {
 
     @Test
     public void return_send_message_with_equal_text_and_chat_id(){
@@ -16,7 +16,7 @@ public class HandledMessageToSendMessageTransformerTest {
         HandledMessage handledMessage = HandledMessage.builder().text(messageText).build();
         SendMessage expected = new SendMessage(chatId, messageText);
 
-        SendMessage result = HandledMessageToSendMessageTransformer.transform(chatId, handledMessage);
+        SendMessage result = HandledMessageToMessageTransformer.transform(chatId, handledMessage);
 
         assertThat(result.getParameters().get("text")).isEqualTo(handledMessage.getText());
         assertThat(result.getParameters().get("chat_id")).isEqualTo(chatId);

@@ -2,6 +2,7 @@ package org.solidarizr.agent.connector;
 
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
+import org.solidarizr.agent.connector.model.Category;
 import org.solidarizr.agent.connector.model.TargetAudience;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -28,6 +29,15 @@ public class SolidarizrManagerConnector {
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<TargetAudience>>() {});
+
+        return result.getBody();
+    }
+
+    public List<Category> getAllCategories(){
+        ResponseEntity<List<Category>> result = restTemplate.exchange(URL + "/categories",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Category>>() {});
 
         return result.getBody();
     }
