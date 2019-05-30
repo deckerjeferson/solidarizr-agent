@@ -35,19 +35,20 @@ public class TelegramBotCommunicator {
         bot.setUpdatesListener(updates -> {
             updates.forEach(update -> {
 
+                String message;
+                Long chatId;
+
+                if (update.message() == null) {
+                    message = update.callbackQuery().data();
+                    chatId = update.callbackQuery().message().chat().id();
+                } else {
+                    chatId = update.message().chat().id();
+                    message = update.message().text();
+                }
+
                 try {
                     log.info("Handling message");
 
-                    String message;
-                    Long chatId;
-
-                    if (update.message() == null) {
-                        message = update.callbackQuery().data();
-                        chatId = update.callbackQuery().message().chat().id();
-                    } else {
-                        chatId = update.message().chat().id();
-                        message = update.message().text();
-                    }
 
                     HandledMessage response = messageHandler.handle(chatId, message);
 
@@ -57,7 +58,7 @@ public class TelegramBotCommunicator {
                 } catch (Exception ex) {
                     log.error(ex.getMessage());
 
-                    bot.execute(new SendMessage(update.message().chat().id(), "Ocorreu algum problema, tenta depois, plz! :)"));
+                    bot.execute(new SendMessage(update.message().chat().id(), "Ocorreu algum problema, tente novamente depois, plz! :)"));
                 }
 
             });

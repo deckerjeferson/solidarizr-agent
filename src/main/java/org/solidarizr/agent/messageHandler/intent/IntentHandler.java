@@ -1,10 +1,25 @@
 package org.solidarizr.agent.messageHandler.intent;
 
+import org.solidarizr.agent.connector.SolidarizrManagerConnector;
+import org.solidarizr.agent.connector.model.TargetAudience;
 import org.solidarizr.agent.messageHandler.HandledMessage;
+import org.solidarizr.agent.messageHandler.intent.transformers.KeyboardOptionTransformer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+import static org.solidarizr.agent.messageHandler.intent.Intent.*;
 
 @Component
 public class IntentHandler {
+
+    private SolidarizrManagerConnector solidarizrManagerConnector;
+
+    @Autowired
+    public IntentHandler(SolidarizrManagerConnector solidarizrManagerConnector) {
+        this.solidarizrManagerConnector = solidarizrManagerConnector;
+    }
 
     public HandledMessage getResponseBasedOnIntent(Intent intent) {
         HandledMessage responseMessage;
@@ -16,36 +31,38 @@ public class IntentHandler {
         switch (intent){
             case START:
                 responseMessage = HandledMessage.builder()
-                        .text("Olá! \nEu sou o Solidarize! :D\nEstou aqui para te ajudar a encontrar um projeto voluntário que tenha a sua cara! :) \nVocê gostaria de procurar um projeto voluntário?")
+                        .text(START.getResponse())
                         .keyboard(HandledMessage.Keyboard.builder()
-                                .option("Sim, gostaria de procurar projetos voluntários!")
-                                .option("Não, me deixa em paz!")
+                                .option(StaticOptions.YES.getOption())
+                                .option(StaticOptions.NO.getOption())
                                 .build())
                         .build();
                 break;
             case GREETING:
                 responseMessage = HandledMessage.builder()
-                        .text("Olá! \nVocê gostaria de procurar um projeto voluntário?")
+                        .text(GREETING.getResponse())
                         .keyboard(HandledMessage.Keyboard.builder()
-                                .option("Sim, gostaria de procurar projetos voluntários!")
-                                .option("Não, me deixa em paz!")
+                                .option(StaticOptions.YES.getOption())
+                                .option(StaticOptions.NO.getOption())
                                 .build())
                         .build();
                 break;
 
-            case ASK_CATEGORIES:
+            case ASK_TARGET_AUDIENCE:
+                List<TargetAudience> targetAudienceList = solidarizrManagerConnector.getAllTargetAudiences();
+                List<HandledMessage.Keyboard.Option> options = KeyboardOptionTransformer.fromTargetAudienceList(targetAudienceList);
+
                 responseMessage = HandledMessage.builder()
-                        .text("Legal! Pode selecionar abaixo o tipo de projeto que mais te interessa! :)")
+                        .text(ASK_TARGET_AUDIENCE.getResponse())
                         .keyboard(HandledMessage.Keyboard.builder()
-                                .option("Sim, gostaria de procurar projetos voluntários!")
-                                .option("Não, me deixa em paz!")
+                                .options(options)
                                 .build())
                         .build();
                 break;
 
             case UNKNOWN:
                 responseMessage = HandledMessage.builder()
-                        .text("Desculpe, não entendi o que você falou.")
+                        .text(UNKNOWN.getResponse())
                         .build();
                 break;
 

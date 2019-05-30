@@ -17,12 +17,12 @@ public class HandledMessage {
     public static class Keyboard{
 
         @Singular
-        private List<String> options;
+        private List<Option> options;
 
         @Value
         @Builder
         public static class Option{
-            private Integer id;
+            private String id;
             private String option;
         }
     }

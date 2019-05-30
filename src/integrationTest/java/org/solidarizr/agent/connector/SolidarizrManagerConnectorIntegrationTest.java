@@ -22,7 +22,7 @@ public class SolidarizrManagerConnectorIntegrationTest {
 
     @Test
     public void get_all_target_audiences(){
-        List<TargetAudience> result = solidarizrManagerConnector.targetAudienceResource().getAll();
+        List<TargetAudience> result = solidarizrManagerConnector.getAllTargetAudiences();
 
         assertThat(result).isNotNull();
     }

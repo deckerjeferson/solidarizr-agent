@@ -24,8 +24,8 @@ public class KeyboardOptionTransformerTest {
 
         List<TargetAudience> targetAudiences = List.of(targetAudience1, targetAudience2);
 
-        List<HandledMessage.Keyboard.Option> expected = List.of(HandledMessage.Keyboard.Option.builder().id(1).option("Target Audience 1").build(),
-                HandledMessage.Keyboard.Option.builder().id(2).option("Target Audience 2").build());
+        List<HandledMessage.Keyboard.Option> expected = List.of(HandledMessage.Keyboard.Option.builder().id("1").option("Target Audience 1").build(),
+                HandledMessage.Keyboard.Option.builder().id("2").option("Target Audience 2").build());
 
         List<HandledMessage.Keyboard.Option> result = KeyboardOptionTransformer.fromTargetAudienceList(targetAudiences);
 
@@ -40,7 +40,7 @@ public class KeyboardOptionTransformerTest {
                 .name("Target Audience 1").build();
 
         HandledMessage.Keyboard.Option expected = HandledMessage.Keyboard.Option.builder()
-                .id(1)
+                .id("1")
                 .option("Target Audience 1").build();
 
         HandledMessage.Keyboard.Option result = KeyboardOptionTransformer.fromTargetAudience(targetAudience);

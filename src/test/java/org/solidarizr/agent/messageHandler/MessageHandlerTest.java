@@ -6,10 +6,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.solidarizr.agent.chat.service.ChatService;
+import org.solidarizr.agent.connector.SolidarizrManagerConnector;
 import org.solidarizr.agent.messageHandler.intent.Intent;
 import org.solidarizr.agent.messageHandler.intent.IntentDiscover;
 import org.solidarizr.agent.messageHandler.intent.IntentHandler;
-import org.solidarizr.agent.chat.repository.model.Chat;
+import org.solidarizr.agent.messageHandler.intent.StaticOptions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,11 +26,14 @@ public class MessageHandlerTest {
     @Mock
     ChatService service;
 
+    @Mock
+    SolidarizrManagerConnector solidarizrManagerConnector;
+
     Long chatId;
 
     @Before
     public void setUp(){
-        intentHandler = new IntentHandler();
+        intentHandler = new IntentHandler(solidarizrManagerConnector);
         intentDiscover = new IntentDiscover();
         messageHandler = new MessageHandler( intentDiscover, intentHandler, service);
     }
@@ -37,10 +41,10 @@ public class MessageHandlerTest {
     @Test
     public void receive_message_and_respond_with_keyboard(){
         HandledMessage expected = HandledMessage.builder()
-                .text("Olá! \nVocê gostaria de procurar um projeto voluntário?")
+                .text(Intent.GREETING.getResponse())
                 .keyboard(HandledMessage.Keyboard.builder()
-                            .option("Sim, gostaria de procurar projetos voluntários!")
-                            .option("Não, me deixa em paz!")
+                            .option(StaticOptions.YES.getOption())
+                            .option(StaticOptions.NO.getOption())
                             .build()
                 ).build();
 

@@ -33,7 +33,7 @@ public class IntentDiscoverTest {
 
     @Test
     public void return_ask_categories_from_want_to_find_project_callback(){
-        assertThat(intentDiscover.discoverIntent("asking_categories")).isEqualTo(Intent.ASK_CATEGORIES);
+        assertThat(intentDiscover.discoverIntent("asking_target_audience")).isEqualTo(Intent.ASK_TARGET_AUDIENCE);
     }
 
 }

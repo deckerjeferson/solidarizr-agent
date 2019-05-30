@@ -2,6 +2,7 @@ package org.solidarizr.agent.communicator.telegram;
 
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.solidarizr.agent.messageHandler.HandledMessage;
@@ -17,25 +18,18 @@ public class HandledMessageToSendMessageTransformer {
 
         if(handledMessage.getKeyboard() != null){
 
+            List<InlineKeyboardButton[]> buttons = new ArrayList<>();
+            handledMessage.getKeyboard().getOptions().forEach(option -> {
+                InlineKeyboardButton buttonToAdd = new InlineKeyboardButton(option.getOption()).callbackData(option.getId());
+                InlineKeyboardButton[] rowOfButtons = {buttonToAdd};
+                buttons.add(rowOfButtons);
+            });
 
-            //String[] options = handledMessage.getKeyboard().getOptions().toArray(new String[0]);
+            InlineKeyboardButton[][] options = buttons.toArray(new InlineKeyboardButton[0][0]);
 
-            List<InlineKeyboardButton> buttons = new ArrayList<>();
-            for(String option : handledMessage.getKeyboard().getOptions()){
-                buttons.add(new InlineKeyboardButton(option).callbackData(option));
-            }
+            InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup(options);
 
-//            ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup(options)
-//                    .oneTimeKeyboard(true)
-//                    .resizeKeyboard(true)
-//                    .selective(true);
-
-
-            InlineKeyboardButton[] options = buttons.toArray(new InlineKeyboardButton[0]);
-
-            InlineKeyboardMarkup teste = new InlineKeyboardMarkup(options);
-
-            sendMessage.replyMarkup(teste);
+            sendMessage.replyMarkup(keyboard);
         }
 
         return sendMessage;

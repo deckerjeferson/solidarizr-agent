@@ -1,8 +1,11 @@
 package org.solidarizr.agent.connector;
 
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Response;
 import org.solidarizr.agent.connector.model.TargetAudience;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -20,20 +23,12 @@ public class SolidarizrManagerConnector {
         this.restTemplate = new RestTemplate();
     }
 
-    public TargetAudienceResource targetAudienceResource(){
-        return new TargetAudienceResource(restTemplate);
-    }
+    public List<TargetAudience> getAllTargetAudiences(){
+        ResponseEntity<List<TargetAudience>> result = restTemplate.exchange(URL + "/targetAudiences",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<TargetAudience>>() {});
 
-    static class TargetAudienceResource {
-        RestTemplate restTemplate;
-
-        public TargetAudienceResource(RestTemplate restTemplate) {
-            this.restTemplate = restTemplate;
-        }
-
-        public List<TargetAudience> getAll(){
-            List<TargetAudience> result = restTemplate.getForObject(URL+"/targetAudiences", List.class);
-            return result;
-        }
+        return result.getBody();
     }
 }
