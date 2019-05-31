@@ -10,7 +10,7 @@ import java.util.List;
 public class KeyboardOptionTransformer {
     public static HandledMessage.Keyboard.Option fromTargetAudience(TargetAudience targetAudience){
         return HandledMessage.Keyboard.Option.builder()
-                .id(targetAudience.getId().toString())
+                .id(String.format("defined_target_audience=%s", targetAudience.getId()))
                 .option(targetAudience.getName()).build();
     }
 
@@ -24,8 +24,8 @@ public class KeyboardOptionTransformer {
 
     public static HandledMessage.Keyboard.Option fromCategory(Category category){
         return HandledMessage.Keyboard.Option.builder()
-                .id(category.getId().toString())
-                .option(category.getName()).build();
+                .id(String.format("defined_category=%s", category.getId()))
+                .option(String.format(category.getName())).build();
     }
 
     public static List<HandledMessage.Keyboard.Option> fromCategoryList(List<Category> categories) {

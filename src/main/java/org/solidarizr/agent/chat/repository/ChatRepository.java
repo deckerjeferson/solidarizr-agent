@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface ChatRepository extends CrudRepository<Chat, Long> {
 
-    public Optional<Chat> findById(Integer id);
+    public Optional<Chat> findById(Long id);
 }

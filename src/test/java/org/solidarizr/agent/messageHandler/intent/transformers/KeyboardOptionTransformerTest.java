@@ -25,8 +25,8 @@ public class KeyboardOptionTransformerTest {
 
         List<TargetAudience> targetAudiences = List.of(targetAudience1, targetAudience2);
 
-        List<HandledMessage.Keyboard.Option> expected = List.of(HandledMessage.Keyboard.Option.builder().id("1").option("Target Audience 1").build(),
-                HandledMessage.Keyboard.Option.builder().id("2").option("Target Audience 2").build());
+        List<HandledMessage.Keyboard.Option> expected = List.of(HandledMessage.Keyboard.Option.builder().id("defined_target_audience=1").option("Target Audience 1").build(),
+                HandledMessage.Keyboard.Option.builder().id("defined_target_audience=2").option("Target Audience 2").build());
 
         List<HandledMessage.Keyboard.Option> result = KeyboardOptionTransformer.fromTargetAudienceList(targetAudiences);
 
@@ -41,7 +41,7 @@ public class KeyboardOptionTransformerTest {
                 .name("Target Audience 1").build();
 
         HandledMessage.Keyboard.Option expected = HandledMessage.Keyboard.Option.builder()
-                .id("1")
+                .id("defined_target_audience=1")
                 .option("Target Audience 1").build();
 
         HandledMessage.Keyboard.Option result = KeyboardOptionTransformer.fromTargetAudience(targetAudience);
@@ -56,7 +56,7 @@ public class KeyboardOptionTransformerTest {
                 .name("Category 1").build();
 
         HandledMessage.Keyboard.Option expected = HandledMessage.Keyboard.Option.builder()
-                .id("1")
+                .id("defined_category=1")
                 .option("Category 1").build();
 
         HandledMessage.Keyboard.Option result = KeyboardOptionTransformer.fromCategory(category);
@@ -76,11 +76,11 @@ public class KeyboardOptionTransformerTest {
                 .name("Category 2").build();
 
         HandledMessage.Keyboard.Option expectedOption1 = HandledMessage.Keyboard.Option.builder()
-                .id("1")
+                .id("defined_category=1")
                 .option("Category 1").build();
 
         HandledMessage.Keyboard.Option expectedOption2 = HandledMessage.Keyboard.Option.builder()
-                .id("2")
+                .id("defined_category=2")
                 .option("Category 2").build();
 
         List<HandledMessage.Keyboard.Option> result = KeyboardOptionTransformer.fromCategoryList(List.of(category1, category2));

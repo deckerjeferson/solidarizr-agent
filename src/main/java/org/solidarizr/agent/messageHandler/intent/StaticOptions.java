@@ -8,7 +8,7 @@ import org.solidarizr.agent.messageHandler.HandledMessage;
 @Getter
 public enum StaticOptions {
     YES(HandledMessage.Keyboard.Option.builder()
-            .id("asking_target_audience")
+            .id("want_to_find_project")
             .option("Sim!").build()),
     NO(HandledMessage.Keyboard.Option.builder()
             .id("end_conversation")

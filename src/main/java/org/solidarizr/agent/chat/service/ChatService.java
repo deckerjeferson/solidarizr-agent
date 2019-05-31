@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class ChatService {
@@ -20,13 +21,15 @@ public class ChatService {
         this.chatRepository = chatRepository;
     }
 
-    public void saveChat(Long id, Intent intent){
+    public Chat saveChat(Long id){
 
         Chat chat = Chat.builder()
-                .id(id)
-                .last_intent(intent)
-                .last_interaction(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())).build();
+                .id(id).build();
 
-        chatRepository.save(chat);
+        return chatRepository.save(chat);
+    }
+
+    public Optional<Chat> find(Long id){
+        return chatRepository.findById(id);
     }
 }

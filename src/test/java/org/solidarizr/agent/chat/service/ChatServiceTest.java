@@ -35,11 +35,9 @@ public class ChatServiceTest {
         final Long chatId = 1234L;
 
         Chat chatShouldBeSaved = Chat.builder()
-                .id(chatId)
-                .last_intent(Intent.START)
-                .last_interaction(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())).build();
+                .id(chatId).build();
 
-        chatService.saveChat(chatId, Intent.START);
+        chatService.saveChat(chatId);
 
         verify(repository).save(any(Chat.class));
     }

@@ -11,6 +11,8 @@ import org.solidarizr.agent.messageHandler.MessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @Slf4j
 @NoArgsConstructor
@@ -37,12 +39,12 @@ public class TelegramBotCommunicator {
 
                 String message;
                 Long chatId;
-                Integer messageId = null;
+                Optional<Integer> messageId = null;
 
                 if (update.message() == null) {
                     message = update.callbackQuery().data();
                     chatId = update.callbackQuery().message().chat().id();
-                    messageId = update.callbackQuery().message().messageId();
+                    messageId = Optional.of(update.callbackQuery().message().messageId());
                 } else {
                     chatId = update.message().chat().id();
                     message = update.message().text();
@@ -54,8 +56,9 @@ public class TelegramBotCommunicator {
                     HandledMessage response = messageHandler.handle(chatId, message);
 
                     log.info("Handled Message to SendMessage");
-                    if(messageId != null){
-                        EditMessageText editMessageText = HandledMessageToMessageTransformer.transform(chatId, response, messageId);
+
+                    if(messageId.isPresent()){
+                        EditMessageText editMessageText = HandledMessageToMessageTransformer.transform(chatId, response, messageId.get());
                         bot.execute(editMessageText);
                     } else {
                         SendMessage sendMessage = HandledMessageToMessageTransformer.transform(chatId, response);

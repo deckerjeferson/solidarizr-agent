@@ -1,7 +1,7 @@
 package org.solidarizr.agent.messageHandler;
 
 import org.solidarizr.agent.messageHandler.intent.Intent;
-import org.solidarizr.agent.messageHandler.intent.IntentDiscover;
+import org.solidarizr.agent.messageHandler.intent.IntentDefiner;
 import org.solidarizr.agent.messageHandler.intent.IntentHandler;
 import org.solidarizr.agent.chat.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,23 +10,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageHandler {
 
-    IntentDiscover intentDiscover;
+    IntentDefiner intentDefiner;
     IntentHandler intentHandler;
-    ChatService service;
 
 
     @Autowired
-    public MessageHandler(IntentDiscover intentDiscover, IntentHandler intentHandler, ChatService chatRepository) {
-        this.intentDiscover = intentDiscover;
+    public MessageHandler(IntentDefiner intentDefiner, IntentHandler intentHandler) {
+        this.intentDefiner = intentDefiner;
         this.intentHandler = intentHandler;
-        this.service = chatRepository;
     }
 
-    public HandledMessage handle(Long id, String message){
-        Intent messageIntent = intentDiscover.discoverIntent(message);
+    public HandledMessage handle(Long id, String input){
+        Intent messageIntent = intentDefiner.defineIntent(input, id);
         HandledMessage responseMessage = intentHandler.getResponseBasedOnIntent(messageIntent);
-
-        service.saveChat(id, messageIntent);
 
         return responseMessage;
     }

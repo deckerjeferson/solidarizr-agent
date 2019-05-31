@@ -57,16 +57,16 @@ public class IntentHandlerTest {
         when(solidarizrManagerConnector.getAllTargetAudiences()).thenReturn(targetAudiences);
 
         List<HandledMessage.Keyboard.Option> expectedOptions = List.of(HandledMessage.Keyboard.Option.builder()
-                        .id(targetAudienceToBeCoverted1.getId().toString())
+                        .id("defined_target_audience="+targetAudienceToBeCoverted1.getId().toString())
                         .option(targetAudienceToBeCoverted1.getName()).build(),
                 HandledMessage.Keyboard.Option.builder()
-                        .id(targetAudienceToBeCoverted2.getId().toString())
+                        .id("defined_target_audience="+targetAudienceToBeCoverted2.getId().toString())
                         .option(targetAudienceToBeCoverted2.getName()).build());
 
         HandledMessage askTargetAudienceHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.ASK_TARGET_AUDIENCE);
 
         assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Intent.ASK_TARGET_AUDIENCE.getResponse());
-        assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions().size()).isEqualTo(3);
+        assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions().size()).isEqualTo(2);
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions()).isEqualTo(expectedOptions);
     }
 
@@ -79,10 +79,10 @@ public class IntentHandlerTest {
         when(solidarizrManagerConnector.getAllCategories()).thenReturn(categories);
 
         List<HandledMessage.Keyboard.Option> expectedOptions = List.of(HandledMessage.Keyboard.Option.builder()
-                        .id(categoryToBeCoverted1.getId().toString())
+                        .id("defined_category="+categoryToBeCoverted1.getId().toString())
                         .option(categoryToBeCoverted1.getName()).build(),
                 HandledMessage.Keyboard.Option.builder()
-                        .id(categoryToBeCoverted2.getId().toString())
+                        .id("defined_category="+categoryToBeCoverted2.getId().toString())
                         .option(categoryToBeCoverted2.getName()).build());
 
 

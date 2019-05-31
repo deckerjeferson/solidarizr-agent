@@ -27,8 +27,6 @@ public class ChatRepositoryIntegrationTest {
     ChatRepository repository;
 
     Chat entity = Chat.builder().id(12345L)
-            .last_intent(Intent.START)
-            .last_interaction(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
             .build();
 
     @After
