@@ -39,7 +39,7 @@ public class TelegramBotCommunicator {
 
                 String message;
                 Long chatId;
-                Optional<Integer> messageId = null;
+                Optional<Integer> messageId = Optional.empty();
 
                 if (update.message() == null) {
                     message = update.callbackQuery().data();
@@ -68,6 +68,7 @@ public class TelegramBotCommunicator {
 
                 } catch (Exception ex) {
                     log.error(ex.getMessage());
+                    log.error(ex.getStackTrace().toString());
 
                     bot.execute(new SendMessage(update.message().chat().id(), "Ocorreu algum problema, tente novamente depois, plz! :)"));
                 }

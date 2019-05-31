@@ -29,15 +29,11 @@ public class IntentDefiner {
         } else if (isStartCommand(input)){
             intent = Intent.START;
         } else if (isWantToFindAProject(input)){
-            Chat newChat = chatService.saveChat(chatId);
-            Interaction newInteraction = interactionService.createInteractionFromChat(newChat);
+            Interaction newInteraction = createNewInteraction(chatId);
 
             intent = getIntentBasedOnFilledInformations(newInteraction);
         } else if (isSomeFillableInformationDefined(input)) {
-            Chat currentChat = chatService.find(chatId).get();
-            Interaction openInteraction = interactionService.getOpenInteractionsFromChat(currentChat).get();
-            Interaction filledInteraction = fillInteractionBasedOnInformationFilled(input, openInteraction);
-
+            Interaction filledInteraction = fillInteractionWithNewInformation(input, chatId);
             Interaction savedInteraction = interactionService.save(filledInteraction);
 
             intent = getIntentBasedOnFilledInformations(savedInteraction);
@@ -46,6 +42,17 @@ public class IntentDefiner {
         }
 
         return intent;
+    }
+
+    private Interaction createNewInteraction(Long chatId) {
+        Chat newChat = chatService.saveChat(chatId);
+        return interactionService.createInteractionFromChat(newChat);
+    }
+
+    private Interaction fillInteractionWithNewInformation(String input, Long chatId) {
+        Chat currentChat = chatService.find(chatId).get();
+        Interaction openInteraction = interactionService.getOpenInteractionsFromChat(currentChat).get();
+        return fillInteractionBasedOnInformationFilled(input, openInteraction);
     }
 
     private Interaction fillInteractionBasedOnInformationFilled(String input, Interaction interaction) {
