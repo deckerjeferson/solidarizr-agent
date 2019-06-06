@@ -45,7 +45,7 @@ public class InteractionService {
         });
     }
 
-    public Optional<Interaction> getOpenInteractionsFromChat(Chat chat){
+    public Optional<Interaction> getOpenInteractionFromChat(Chat chat){
         return interactionRepository.findByChatAndClosed(chat, false).stream().findFirst();
     }
 

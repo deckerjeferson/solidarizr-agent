@@ -14,6 +14,8 @@ import org.solidarizr.agent.messageHandler.intent.IntentDefiner;
 import org.solidarizr.agent.messageHandler.intent.IntentHandler;
 import org.solidarizr.agent.messageHandler.intent.StaticOptions;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -37,7 +39,7 @@ public class MessageHandlerTest {
 
     @Before
     public void setUp(){
-        intentHandler = new IntentHandler(solidarizrManagerConnector);
+        intentHandler = new IntentHandler(solidarizrManagerConnector, interactionService);
         intentDefiner = new IntentDefiner(chatService, interactionService);
         messageHandler = new MessageHandler(intentDefiner, intentHandler);
     }
@@ -52,9 +54,11 @@ public class MessageHandlerTest {
                             .build()
                 ).build();
 
-        HandledMessage handledMessage = messageHandler.handle(chatId,"Oi!");
+        List<HandledMessage> handledMessage = messageHandler.handle(chatId,"Oi!");
 
-        assertThat(handledMessage).isEqualTo(expected);
+        assertThat(handledMessage.size()).isEqualTo(1);
+        assertThat(handledMessage.get(0)).isEqualTo(expected);
+
     }
 
     @Test
@@ -62,9 +66,10 @@ public class MessageHandlerTest {
         HandledMessage expected = HandledMessage.builder()
                 .text("Desculpe, não entendi o que você falou.").build();
 
-        HandledMessage handledMessage = messageHandler.handle(chatId,"AKSJDADJHASJDHA");
+        List<HandledMessage> handledMessage = messageHandler.handle(chatId,"AKSJDADJHASJDHA");
 
-        assertThat(handledMessage).isEqualTo(expected);
+        assertThat(handledMessage.size()).isEqualTo(1);
+        assertThat(handledMessage.get(0)).isEqualTo(expected);
     }
 
     @Test

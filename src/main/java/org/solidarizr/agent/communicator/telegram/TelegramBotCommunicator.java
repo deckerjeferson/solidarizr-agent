@@ -2,6 +2,7 @@ package org.solidarizr.agent.communicator.telegram;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.EditMessageText;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import org.solidarizr.agent.messageHandler.MessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -53,15 +55,26 @@ public class TelegramBotCommunicator {
                 try {
                     log.info("Handling message");
 
-                    HandledMessage response = messageHandler.handle(chatId, message);
+                    List<HandledMessage> responses = messageHandler.handle(chatId, message);
 
                     log.info("Handled Message to SendMessage");
 
                     if(messageId.isPresent()){
-                        EditMessageText editMessageText = HandledMessageToMessageTransformer.transform(chatId, response, messageId.get());
-                        bot.execute(editMessageText);
+                        Integer id = messageId.get();
+
+                        responses.forEach(response -> {
+                            if(response.isFirstOrUnique()){
+                                EditMessageText editMessageText = HandledMessageToMessageTransformer.transform(chatId, response, id);
+                                bot.execute(editMessageText);
+                            } else {
+                                SendMessage sendMessage = HandledMessageToMessageTransformer.transform(chatId, response);
+                                sendMessage.parseMode(ParseMode.HTML);
+
+                                bot.execute(sendMessage);
+                            }
+                        });
                     } else {
-                        SendMessage sendMessage = HandledMessageToMessageTransformer.transform(chatId, response);
+                        SendMessage sendMessage = HandledMessageToMessageTransformer.transform(chatId, responses.get(0));
                         bot.execute(sendMessage);
                     }
 

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.solidarizr.agent.chat.service.InteractionService;
 import org.solidarizr.agent.connector.SolidarizrManagerConnector;
 import org.solidarizr.agent.connector.model.Category;
 import org.solidarizr.agent.connector.model.TargetAudience;
@@ -21,20 +22,24 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class IntentHandlerTest {
 
+    public static final Long CHAT_ID = 1L;
     IntentHandler intentHandler;
 
     @Mock
     SolidarizrManagerConnector solidarizrManagerConnector;
 
+    @Mock
+    InteractionService interactionService;
+
 
     @Before
     public void setUp(){
-        intentHandler = new IntentHandler(solidarizrManagerConnector);
+        intentHandler = new IntentHandler(solidarizrManagerConnector, interactionService);
     }
 
     @Test
     public void respond_greetings_message_when_receive_greetings_intent(){
-        HandledMessage greetingsHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.GREETING);
+        HandledMessage greetingsHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.GREETING, CHAT_ID).get(0);
 
         assertThat(greetingsHandledMessage.getText()).isEqualTo(Intent.GREETING.getResponse());
         assertThat(greetingsHandledMessage.getKeyboard().getOptions()).containsExactly(StaticOptions.YES.getOption(), StaticOptions.NO.getOption());
@@ -42,7 +47,7 @@ public class IntentHandlerTest {
 
     @Test
     public void respond_start_message_when_receive_start_intent(){
-        HandledMessage startHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.START);
+        HandledMessage startHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.START, CHAT_ID).get(0);
 
         assertThat(startHandledMessage.getText()).isEqualTo(Intent.START.getResponse());
         assertThat(startHandledMessage.getKeyboard().getOptions()).containsExactly(StaticOptions.YES.getOption(), StaticOptions.NO.getOption());
@@ -63,7 +68,7 @@ public class IntentHandlerTest {
                         .id("defined_target_audience="+targetAudienceToBeCoverted2.getId().toString())
                         .option(targetAudienceToBeCoverted2.getName()).build());
 
-        HandledMessage askTargetAudienceHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.ASK_TARGET_AUDIENCE);
+        HandledMessage askTargetAudienceHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.ASK_TARGET_AUDIENCE, CHAT_ID).get(0);
 
         assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Intent.ASK_TARGET_AUDIENCE.getResponse());
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions().size()).isEqualTo(2);
@@ -86,7 +91,7 @@ public class IntentHandlerTest {
                         .option(categoryToBeCoverted2.getName()).build());
 
 
-        HandledMessage askTargetAudienceHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.ASK_CATEGORIES);
+        HandledMessage askTargetAudienceHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.ASK_CATEGORIES, CHAT_ID).get(0);
         assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Intent.ASK_CATEGORIES.getResponse());
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions().size()).isEqualTo(2);
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions()).isEqualTo(expectedOptions);
@@ -94,12 +99,17 @@ public class IntentHandlerTest {
 
     @Test
     public void respond_not_understood_message_when_unknown_intent(){
-        HandledMessage unknownHandledMessaged = intentHandler.getResponseBasedOnIntent(Intent.UNKNOWN);
+        HandledMessage unknownHandledMessaged = intentHandler.getResponseBasedOnIntent(Intent.UNKNOWN, CHAT_ID).get(0);
         assertThat(unknownHandledMessaged.getText()).isEqualTo(Intent.UNKNOWN.getResponse());
+    }
+
+    @Test
+    public void repospond_events_when_get_evets_intent(){
+
     }
 
     @Test(expected = UnsupportedIntent.class)
     public void respont_unsupportedIntent_exception_when_not_supported_intent(){
-        intentHandler.getResponseBasedOnIntent(null);
+        intentHandler.getResponseBasedOnIntent(null, CHAT_ID);
     }
 }

@@ -83,7 +83,7 @@ public class IntentDefinerTest {
                 .closed(Boolean.FALSE).build();
 
         when(chatService.find(CHAT_ID)).thenReturn(Optional.of(savedChat));
-        when(interactionService.getOpenInteractionsFromChat(savedChat)).thenReturn(Optional.of(savedInteraction));
+        when(interactionService.getOpenInteractionFromChat(savedChat)).thenReturn(Optional.of(savedInteraction));
         when(interactionService.save(filledInteraction)).thenReturn(filledInteraction);
 
         assertThat(intentDefiner.defineIntent("defined_target_audience=1", CHAT_ID)).isEqualTo(Intent.ASK_CATEGORIES);
@@ -107,7 +107,7 @@ public class IntentDefinerTest {
                 .closed(Boolean.FALSE).build();
 
         when(chatService.find(CHAT_ID)).thenReturn(Optional.of(savedChat));
-        when(interactionService.getOpenInteractionsFromChat(savedChat)).thenReturn(Optional.of(savedInteraction));
+        when(interactionService.getOpenInteractionFromChat(savedChat)).thenReturn(Optional.of(savedInteraction));
         when(interactionService.save(filledInteraction)).thenReturn(filledInteraction);
 
         assertThat(intentDefiner.defineIntent("defined_category=1", CHAT_ID)).isEqualTo(Intent.GET_EVENTS);

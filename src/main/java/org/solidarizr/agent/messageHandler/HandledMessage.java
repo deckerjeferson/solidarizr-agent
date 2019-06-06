@@ -11,6 +11,7 @@ import java.util.Optional;
 public class HandledMessage {
     private String text;
     private Keyboard keyboard;
+    private Boolean firstOrUnique;
 
     @Value
     @Builder
@@ -25,5 +26,9 @@ public class HandledMessage {
             private String id;
             private String option;
         }
+    }
+
+    public Boolean isFirstOrUnique(){
+        return firstOrUnique != null && firstOrUnique;
     }
 }

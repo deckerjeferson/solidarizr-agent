@@ -7,8 +7,6 @@ import org.solidarizr.agent.chat.service.InteractionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class IntentDefiner {
 
@@ -51,7 +49,7 @@ public class IntentDefiner {
 
     private Interaction fillInteractionWithNewInformation(String input, Long chatId) {
         Chat currentChat = chatService.find(chatId).get();
-        Interaction openInteraction = interactionService.getOpenInteractionsFromChat(currentChat).get();
+        Interaction openInteraction = interactionService.getOpenInteractionFromChat(currentChat).get();
         return fillInteractionBasedOnInformationFilled(input, openInteraction);
     }
 
