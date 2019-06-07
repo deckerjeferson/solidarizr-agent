@@ -48,6 +48,7 @@ public class MessageHandlerTest {
     public void receive_message_and_respond_with_keyboard(){
         HandledMessage expected = HandledMessage.builder()
                 .text(Intent.GREETING.getResponse())
+                .firstOrUnique(true)
                 .keyboard(HandledMessage.Keyboard.builder()
                             .option(StaticOptions.YES.getOption())
                             .option(StaticOptions.NO.getOption())
