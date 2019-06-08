@@ -18,6 +18,12 @@ public class Event {
 
     private String description;
 
+    private String phone;
+
+    private String site;
+
+    private String email;
+
     private Category category;
 
     private TargetAudience targetAudience;

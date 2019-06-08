@@ -13,9 +13,18 @@ public class HandledMessageTransformer {
 
         events.forEach(event -> {
             responses.add(HandledMessage.builder()
-                    .text(String.format("<b>Nome:</b> %s\n<b>Descrição:</b> %s\n\n<b>Categoria:</b> %s\n<b>Público Alvo:</b> %s",
+                    .text(String.format("<b>Nome:</b> %s\n"+
+                                        "<b>Descrição:</b> %s\n"+
+                                        "<b>Telefone:</b> %s\n"+
+                                        "<b>Site:</b> %s\n"+
+                                        "<b>Email:</b> %s\n\n"+
+                                        "<b>Categoria:</b> %s\n" +
+                                        "<b>Público Alvo:</b> %s",
                             event.getName(),
                             event.getDescription(),
+                            event.getPhone(),
+                            event.getSite(),
+                            event.getEmail(),
                             event.getCategory().getName(),
                             event.getTargetAudience().getName())).build());
         });
