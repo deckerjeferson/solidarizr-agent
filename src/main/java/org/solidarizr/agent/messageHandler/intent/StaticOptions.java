@@ -11,8 +11,8 @@ public enum StaticOptions {
             .id("want_to_find_project")
             .option("Sim!").build()),
     NO(HandledMessage.Keyboard.Option.builder()
-            .id("end_conversation")
-            .option("Não!").build());
+            .id("want_to_create_project")
+            .option("Não! Gostaria de cadastrar um projeto voluntário!").build());
 
     private HandledMessage.Keyboard.Option option;
 

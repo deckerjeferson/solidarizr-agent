@@ -60,6 +60,9 @@ public class IntentHandler {
                 responseMessage.addAll(getGetEventsResponseMessage(currentInteraction));
                 break;
 
+            case CREATE_PROJECTS:
+                return getCreateProjectsResponse();
+
             case UNKNOWN:
                 responseMessage.add(getUnknownResponseMessage());
                 break;
@@ -69,6 +72,13 @@ public class IntentHandler {
         }
 
         return responseMessage;
+    }
+
+    private List<HandledMessage> getCreateProjectsResponse() {
+        return List.of(HandledMessage.builder()
+                .text(CREATE_PROJECTS.getResponse())
+                .firstOrUnique(Boolean.TRUE)
+                .build());
     }
 
     private List<HandledMessage> getGetEventsResponseMessage(Optional<Interaction> currentInteraction) {

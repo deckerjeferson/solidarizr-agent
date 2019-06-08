@@ -35,11 +35,17 @@ public class IntentDefiner {
             Interaction savedInteraction = interactionService.save(filledInteraction);
 
             intent = getIntentBasedOnFilledInformations(savedInteraction);
-        } else {
+        } else if(isWantToCreateProject(input)) {
+            return Intent.CREATE_PROJECTS;
+        } else{
             intent = Intent.UNKNOWN;
         }
 
         return intent;
+    }
+
+    private Boolean isWantToCreateProject(String input) {
+        return Intent.CREATE_PROJECTS.getTrigger().equals(input);
     }
 
     private Interaction createNewInteraction(Long chatId) {
