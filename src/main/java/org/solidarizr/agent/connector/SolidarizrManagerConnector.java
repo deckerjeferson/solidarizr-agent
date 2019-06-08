@@ -51,4 +51,22 @@ public class SolidarizrManagerConnector {
 
         return result.getBody();
     }
+
+    public List<TargetAudience> findTargetAudiencesByEventsWithCategoryId(Integer category) {
+        ResponseEntity<List<TargetAudience>> result = restTemplate.exchange(URL + String.format("/targetAudience/category/%s",category),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<TargetAudience>>() {});
+
+        return result.getBody();
+    }
+
+    public List<Category> findCategoryByEventsWithTargetAudienceId(Integer category) {
+        ResponseEntity<List<Category>> result = restTemplate.exchange(URL + String.format("/category/targetAudience/%s",category),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Category>>() {});
+
+        return result.getBody();
+    }
 }
