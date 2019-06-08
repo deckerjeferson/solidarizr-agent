@@ -2,6 +2,7 @@ package org.solidarizr.agent.messageHandler.intent;
 
 import org.solidarizr.agent.connector.model.Event;
 import org.solidarizr.agent.messageHandler.HandledMessage;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,19 +28,19 @@ public class HandledMessageTransformer {
                 event.getName(),
                 event.getDescription());
 
-        if(!event.getEmail().isEmpty()){
+        if(!StringUtils.isEmpty(event.getEmail())){
             message += String.format("<b>Email:</b> %s\n", event.getEmail());
         }
 
-        if(!event.getSite().isEmpty()){
+        if(!StringUtils.isEmpty(event.getSite())){
             message += String.format("<b>Site:</b> %s\n", event.getSite());
         }
 
-        if(!event.getPhone().isEmpty()){
+        if(!StringUtils.isEmpty(event.getPhone())){
             message += String.format("<b>Telefone:</b> %s\n", event.getPhone());
         }
 
-       message += String.format("\n<b>Categoria:</b> %s\n" +
+        message += String.format("\n<b>Categoria:</b> %s\n" +
                         "<b>Público Alvo:</b> %s",
                 event.getCategory().getName(),
                 event.getTargetAudience().getName());
