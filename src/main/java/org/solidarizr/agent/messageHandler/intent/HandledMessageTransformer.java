@@ -13,7 +13,9 @@ public class HandledMessageTransformer {
 
         events.forEach(event -> {
             responses.add(HandledMessage.builder()
-                    .text(fillEventMessageText(event));
+                    .text(fillEventMessageText(event))
+                    .firstOrUnique(false)
+                    .build());
         });
 
         return responses;
