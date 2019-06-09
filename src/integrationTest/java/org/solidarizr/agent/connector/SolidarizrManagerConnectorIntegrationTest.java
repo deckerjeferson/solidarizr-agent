@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@ActiveProfiles("local")
+@ActiveProfiles("test")
 public class SolidarizrManagerConnectorIntegrationTest {
 
     @Autowired
@@ -44,9 +44,23 @@ public class SolidarizrManagerConnectorIntegrationTest {
     }
 
     @Test
-    public void get_events_by_category_and_target_audience_with_not_Existing_filters(){
+    public void get_events_by_category_and_target_audience_with_not_existing_filters(){
         List<Event> result = solidarizrManagerConnector.getEventsBasedOnCategoryAndTargetAudience(0,0);
 
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void get_categories_by_target_audience(){
+        List<Category> result = solidarizrManagerConnector.findCategoryByEventsWithTargetAudienceId(8);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    public void get_target_audience_by_category(){
+        List<TargetAudience > result = solidarizrManagerConnector.findTargetAudiencesByEventsWithCategoryId(6);
+
+        assertThat(result).isNotNull();
     }
 }
