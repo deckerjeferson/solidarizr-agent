@@ -7,4 +7,8 @@ public class TargetAudienceFixtures {
             .id(1)
             .name("Crianças").build();
 
+    public static final TargetAudience ANOTHER_EXISTING_TARGET_AUDIENCE = TargetAudience.builder()
+            .id(2)
+            .name("Moradores de Rua").build();
+
 }

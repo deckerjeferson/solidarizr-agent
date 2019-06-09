@@ -4,6 +4,9 @@ import org.junit.Test;
 import org.solidarizr.agent.connector.model.Category;
 import org.solidarizr.agent.connector.model.TargetAudience;
 import org.solidarizr.agent.messageHandler.HandledMessage;
+import org.solidarizr.agent.utils.CategoryFixtures;
+import org.solidarizr.agent.utils.KeyboardOptionFixtures;
+import org.solidarizr.agent.utils.TargetAudienceFixtures;
 
 import java.lang.annotation.Target;
 import java.util.List;
@@ -15,77 +18,38 @@ public class KeyboardOptionTransformerTest {
 
     @Test
     public void from_list_of_target_audience_to_list_of_options() {
-        TargetAudience targetAudience1 = TargetAudience.builder()
-                .id(1)
-                .name("Target Audience 1").build();
+        List<TargetAudience> targetAudiences = List.of(TargetAudienceFixtures.EXISTING_TARGET_AUDIENCE,
+                TargetAudienceFixtures.ANOTHER_EXISTING_TARGET_AUDIENCE);
 
-        TargetAudience targetAudience2 = TargetAudience.builder()
-                .id(2)
-                .name("Target Audience 2").build();
-
-        List<TargetAudience> targetAudiences = List.of(targetAudience1, targetAudience2);
-
-        List<HandledMessage.Keyboard.Option> expected = List.of(HandledMessage.Keyboard.Option.builder().id("defined_target_audience=1").option("Target Audience 1").build(),
-                HandledMessage.Keyboard.Option.builder().id("defined_target_audience=2").option("Target Audience 2").build());
+        List<HandledMessage.Keyboard.Option> expected = List.of(KeyboardOptionFixtures.HANDLED_MESSAGE_FROM_EXISTING_TARGET_AUDIENCE,
+                KeyboardOptionFixtures.HANDLED_MESSAGE_FROM_ANOTHER_EXISTING_TARGET_AUDIENCE);
 
         List<HandledMessage.Keyboard.Option> result = KeyboardOptionTransformer.fromTargetAudienceList(targetAudiences);
 
         assertThat(result).isEqualTo(expected);
-
     }
 
     @Test
     public void from_target_audience_to_option() {
-        TargetAudience targetAudience = TargetAudience.builder()
-                .id(1)
-                .name("Target Audience 1").build();
+        HandledMessage.Keyboard.Option result = KeyboardOptionTransformer.fromTargetAudience(TargetAudienceFixtures.EXISTING_TARGET_AUDIENCE);
 
-        HandledMessage.Keyboard.Option expected = HandledMessage.Keyboard.Option.builder()
-                .id("defined_target_audience=1")
-                .option("Target Audience 1").build();
-
-        HandledMessage.Keyboard.Option result = KeyboardOptionTransformer.fromTargetAudience(targetAudience);
-
-        assertThat(result).isEqualTo(expected);
+        assertThat(result).isEqualTo(KeyboardOptionFixtures.HANDLED_MESSAGE_FROM_EXISTING_TARGET_AUDIENCE);
     }
 
     @Test
     public void from_category(){
-        Category category = Category.builder()
-                .id(1)
-                .name("Category 1").build();
+        HandledMessage.Keyboard.Option result = KeyboardOptionTransformer.fromCategory(CategoryFixtures.EXISTING_CATEGORY);
 
-        HandledMessage.Keyboard.Option expected = HandledMessage.Keyboard.Option.builder()
-                .id("defined_category=1")
-                .option("Category 1").build();
-
-        HandledMessage.Keyboard.Option result = KeyboardOptionTransformer.fromCategory(category);
-
-        assertThat(result).isEqualTo(expected);
-
+        assertThat(result).isEqualTo(KeyboardOptionFixtures.HANDLED_MESSAGE_FROM_EXISTING_CATEGORY);
     }
 
     @Test
     public void from_category_list(){
-        Category category1 = Category.builder()
-                .id(1)
-                .name("Category 1").build();
+        List<HandledMessage.Keyboard.Option> result = KeyboardOptionTransformer.fromCategoryList(List.of(CategoryFixtures.EXISTING_CATEGORY,
+                CategoryFixtures.ANOTHER_EXISTING_CATEGORY));
 
-        Category category2 = Category.builder()
-                .id(2)
-                .name("Category 2").build();
-
-        HandledMessage.Keyboard.Option expectedOption1 = HandledMessage.Keyboard.Option.builder()
-                .id("defined_category=1")
-                .option("Category 1").build();
-
-        HandledMessage.Keyboard.Option expectedOption2 = HandledMessage.Keyboard.Option.builder()
-                .id("defined_category=2")
-                .option("Category 2").build();
-
-        List<HandledMessage.Keyboard.Option> result = KeyboardOptionTransformer.fromCategoryList(List.of(category1, category2));
-
-        assertThat(result).isEqualTo(List.of(expectedOption1, expectedOption2));
+        assertThat(result).isEqualTo(List.of(KeyboardOptionFixtures.HANDLED_MESSAGE_FROM_EXISTING_CATEGORY,
+                KeyboardOptionFixtures.HANDLED_MESSAGE_FROM_ANOTHER_EXISTING_CATEGORY));
 
     }
 }
