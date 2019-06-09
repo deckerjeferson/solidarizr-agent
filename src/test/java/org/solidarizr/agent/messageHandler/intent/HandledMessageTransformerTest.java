@@ -4,9 +4,8 @@ import org.junit.Test;
 import org.solidarizr.agent.connector.model.Event;
 import org.solidarizr.agent.messageHandler.HandledMessage;
 import org.solidarizr.agent.messageHandler.Messages;
-import org.solidarizr.agent.utils.CategoryFixtures;
+import org.solidarizr.agent.messageHandler.intent.transformers.HandledMessageTransformer;
 import org.solidarizr.agent.utils.EventFixture;
-import org.solidarizr.agent.utils.TargetAudienceFixtures;
 
 import java.util.List;
 

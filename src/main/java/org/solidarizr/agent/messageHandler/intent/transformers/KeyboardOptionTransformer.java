@@ -3,8 +3,7 @@ package org.solidarizr.agent.messageHandler.intent.transformers;
 import org.solidarizr.agent.connector.model.Category;
 import org.solidarizr.agent.connector.model.TargetAudience;
 import org.solidarizr.agent.messageHandler.HandledMessage;
-import org.solidarizr.agent.messageHandler.Messages;
-import org.solidarizr.agent.messageHandler.intent.IntentCallbacks;
+import org.solidarizr.agent.messageHandler.intent.IntentTriggers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 public class KeyboardOptionTransformer {
     public static HandledMessage.Keyboard.Option fromTargetAudience(TargetAudience targetAudience){
         return HandledMessage.Keyboard.Option.builder()
-                .id(String.format(IntentCallbacks.DEFINED_CATEGORY, targetAudience.getId()))
+                .id(String.format(IntentTriggers.DEFINDED_TARGET_AUDIENCE, targetAudience.getId()))
                 .option(targetAudience.getName()).build();
     }
 
@@ -26,7 +25,7 @@ public class KeyboardOptionTransformer {
 
     public static HandledMessage.Keyboard.Option fromCategory(Category category){
         return HandledMessage.Keyboard.Option.builder()
-                .id(String.format(IntentCallbacks.DEFINDED_TARGET_AUDIENCE, category.getId()))
+                .id(String.format(IntentTriggers.DEFINED_CATEGORY, category.getId()))
                 .option(String.format(category.getName())).build();
     }
 

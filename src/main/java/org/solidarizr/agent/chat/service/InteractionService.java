@@ -49,6 +49,11 @@ public class InteractionService {
         return interactionRepository.findByChatAndClosed(chat, false).stream().findFirst();
     }
 
+    public Optional<Interaction> getOpenInteractionFromChat(Long id){
+        return getOpenInteractionFromChat(Chat.builder().id(id).build());
+    }
+
+
     public Interaction   save(Interaction interaction) {
         return interactionRepository.save(interaction);
     }

@@ -2,13 +2,13 @@ package org.solidarizr.agent.messageHandler.intent;
 
 import org.solidarizr.agent.chat.repository.model.Chat;
 import org.solidarizr.agent.chat.repository.model.Interaction;
-import org.solidarizr.agent.chat.service.ChatService;
 import org.solidarizr.agent.chat.service.InteractionService;
 import org.solidarizr.agent.connector.SolidarizrManagerConnector;
 import org.solidarizr.agent.connector.model.Category;
 import org.solidarizr.agent.connector.model.Event;
 import org.solidarizr.agent.connector.model.TargetAudience;
 import org.solidarizr.agent.messageHandler.HandledMessage;
+import org.solidarizr.agent.messageHandler.intent.transformers.HandledMessageTransformer;
 import org.solidarizr.agent.messageHandler.intent.transformers.KeyboardOptionTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,7 +38,7 @@ public class IntentHandler {
             throw new UnsupportedIntent();
         }
 
-        Optional<Interaction> currentInteraction = interactionService.getOpenInteractionFromChat(Chat.builder().id(chatId).build());
+        Optional<Interaction> currentInteraction = interactionService.getOpenInteractionFromChat(chatId);
 
         switch (intent){
             case START:

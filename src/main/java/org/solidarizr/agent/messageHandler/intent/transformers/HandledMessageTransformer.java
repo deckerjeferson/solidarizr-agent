@@ -1,4 +1,4 @@
-package org.solidarizr.agent.messageHandler.intent;
+package org.solidarizr.agent.messageHandler.intent.transformers;
 
 import org.solidarizr.agent.connector.model.Event;
 import org.solidarizr.agent.messageHandler.HandledMessage;
