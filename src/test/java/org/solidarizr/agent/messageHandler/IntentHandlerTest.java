@@ -5,17 +5,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.solidarizr.agent.chat.repository.model.Chat;
 import org.solidarizr.agent.chat.service.InteractionService;
 import org.solidarizr.agent.connector.SolidarizrManagerConnector;
 import org.solidarizr.agent.connector.model.Category;
+import org.solidarizr.agent.connector.model.Event;
 import org.solidarizr.agent.connector.model.TargetAudience;
-import org.solidarizr.agent.messageHandler.intent.Intent;
-import org.solidarizr.agent.messageHandler.intent.IntentHandler;
-import org.solidarizr.agent.messageHandler.intent.StaticOptions;
-import org.solidarizr.agent.messageHandler.intent.UnsupportedIntent;
+import org.solidarizr.agent.messageHandler.intent.*;
 import org.solidarizr.agent.utils.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +39,6 @@ public class IntentHandlerTest {
 
     @Test
     public void respond_greetings_message_when_receive_greetings_intent(){
-        when(interactionService.getOpenInteractionFromChat(ChatFixture.CHAT_WITH_JUST_ID.getId())).thenReturn(Optional.empty());
-
         HandledMessage greetingsHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.GREETING, ChatFixture.CHAT_WITH_JUST_ID.getId()).get(0);
 
         assertThat(greetingsHandledMessage.getText()).isEqualTo(Intent.GREETING.getResponse());
@@ -51,8 +47,6 @@ public class IntentHandlerTest {
 
     @Test
     public void respond_start_message_when_receive_start_intent(){
-        when(interactionService.getOpenInteractionFromChat(ChatFixture.CHAT_WITH_JUST_ID.getId())).thenReturn(Optional.empty());
-
         HandledMessage startHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.START, ChatFixture.CHAT_WITH_JUST_ID.getId()).get(0);
 
         assertThat(startHandledMessage.getText()).isEqualTo(Intent.START.getResponse());
@@ -151,12 +145,68 @@ public class IntentHandlerTest {
     }
 
     @Test
-    public void repospond_events_when_get_evets_intent(){
+    public void respond_events_when_get_evets_intent_and_there_is_events_to_this_category_and_target_audience(){
+        when(interactionService.getOpenInteractionFromChat(ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId()))
+                .thenReturn(Optional.of(InteractionFixture.OPEN_INTERACTION_FROM_DB_WITH_ALL_INFORMATIONS_FILLED));
 
+        List<Event> events = List.of(EventFixture.EVENT_WITH_ALL_INFORMATIONS_FILLED);
+
+        when(solidarizrManagerConnector.getEventsBasedOnCategoryAndTargetAudience(InteractionFixture.OPEN_INTERACTION_FROM_DB_WITH_ALL_INFORMATIONS_FILLED.getCategory(),
+                InteractionFixture.OPEN_INTERACTION_FROM_DB_WITH_ALL_INFORMATIONS_FILLED.getTargetAudience()))
+                .thenReturn(events);
+
+        List<HandledMessage> expectedHandleMessages = List.of(HandledMessageFixture.FIXED_EVENT_RESPONSE_HANDLE_MESSAGE_WHEN_HAVE_EVENTS,
+                HandledMessageFixture.HANDLED_MESSAGE_FROM_EVENT_WITH_ALL_INFORMATIONS_FILLED);
+
+        List<HandledMessage> result = intentHandler.getResponseBasedOnIntent(Intent.GET_EVENTS, ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId());
+
+        assertThat(result).isEqualTo(expectedHandleMessages);
+    }
+
+    @Test
+    public void respond_no_events_when_get_evets_intent_and_there_is_events_to_this_category_and_target_audience(){
+        when(interactionService.getOpenInteractionFromChat(ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId()))
+                .thenReturn(Optional.of(InteractionFixture.OPEN_INTERACTION_FROM_DB_WITH_ALL_INFORMATIONS_FILLED));
+
+        List<Event> events = Collections.emptyList();
+
+        when(solidarizrManagerConnector.getEventsBasedOnCategoryAndTargetAudience(InteractionFixture.OPEN_INTERACTION_FROM_DB_WITH_ALL_INFORMATIONS_FILLED.getCategory(),
+                InteractionFixture.OPEN_INTERACTION_FROM_DB_WITH_ALL_INFORMATIONS_FILLED.getTargetAudience()))
+                .thenReturn(events);
+
+        List<HandledMessage> expectedHandleMessages = List.of(HandledMessageFixture.FIXED_EVENT_RESPONSE_HANDLE_MESSAGE_WHEN_HAVE_NOT_EVENTS);
+
+        List<HandledMessage> result = intentHandler.getResponseBasedOnIntent(Intent.GET_EVENTS, ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId());
+
+        assertThat(result).isEqualTo(expectedHandleMessages);
     }
 
     @Test(expected = UnsupportedIntent.class)
     public void respont_unsupportedIntent_exception_when_not_supported_intent(){
         intentHandler.getResponseBasedOnIntent(null, ChatFixture.CHAT_WITH_JUST_ID.getId());
+    }
+
+    @Test(expected = NoInterractionFound.class)
+    public void throw_NoInteractionFound_when_do_not_find_interaction_and_is_ask_categories_intent(){
+        when(interactionService.getOpenInteractionFromChat(ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId()))
+                .thenReturn(Optional.empty());
+
+        intentHandler.getResponseBasedOnIntent(Intent.ASK_CATEGORIES, ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId());
+    }
+
+    @Test(expected = NoInterractionFound.class)
+    public void throw_NoInteractionFound_when_do_not_find_interaction_and_is_ask_target_audience_intent(){
+        when(interactionService.getOpenInteractionFromChat(ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId()))
+                .thenReturn(Optional.empty());
+
+        intentHandler.getResponseBasedOnIntent(Intent.ASK_TARGET_AUDIENCE, ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId());
+    }
+
+    @Test(expected = NoInterractionFound.class)
+    public void throw_NoInteractionFound_when_do_not_find_interaction_and_is_get_events_audience_intent(){
+        when(interactionService.getOpenInteractionFromChat(ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId()))
+                .thenReturn(Optional.empty());
+
+        intentHandler.getResponseBasedOnIntent(Intent.GET_EVENTS, ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId());
     }
 }

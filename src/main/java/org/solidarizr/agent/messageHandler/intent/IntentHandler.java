@@ -1,6 +1,5 @@
 package org.solidarizr.agent.messageHandler.intent;
 
-import org.solidarizr.agent.chat.repository.model.Chat;
 import org.solidarizr.agent.chat.repository.model.Interaction;
 import org.solidarizr.agent.chat.service.InteractionService;
 import org.solidarizr.agent.connector.SolidarizrManagerConnector;
@@ -38,7 +37,7 @@ public class IntentHandler {
             throw new UnsupportedIntent();
         }
 
-        Optional<Interaction> currentInteraction = interactionService.getOpenInteractionFromChat(chatId);
+        Interaction currentInteraction = getInteractionIfNeeded(intent, chatId);
 
         switch (intent){
             case START:
@@ -74,6 +73,21 @@ public class IntentHandler {
         return responseMessage;
     }
 
+    private Interaction getInteractionIfNeeded(Intent intent, Long chatId) {
+        Interaction interaction = null;
+
+        if(ASK_CATEGORIES.equals(intent) || ASK_TARGET_AUDIENCE.equals(intent) || GET_EVENTS.equals(intent)){
+            Optional<Interaction> interactionFromDB = interactionService.getOpenInteractionFromChat(chatId);
+
+            if(interactionFromDB.isPresent()){
+                interaction = interactionFromDB.get();
+            } else {
+                throw new NoInterractionFound();
+            }
+        }
+        return interaction;
+    }
+
     private List<HandledMessage> getCreateProjectsResponse() {
         return List.of(HandledMessage.builder()
                 .text(CREATE_PROJECTS.getResponse())
@@ -81,12 +95,11 @@ public class IntentHandler {
                 .build());
     }
 
-    private List<HandledMessage> getGetEventsResponseMessage(Optional<Interaction> currentInteraction) {
+    private List<HandledMessage> getGetEventsResponseMessage(Interaction currentInteraction) {
         List<HandledMessage> responseMessages = new ArrayList<>();
 
-        if(currentInteraction.isPresent()) {
-            List<Event> events = solidarizrManagerConnector.getEventsBasedOnCategoryAndTargetAudience(currentInteraction.get().getCategory()
-                    , currentInteraction.get().getTargetAudience());
+            List<Event> events = solidarizrManagerConnector.getEventsBasedOnCategoryAndTargetAudience(currentInteraction.getCategory()
+                    , currentInteraction.getTargetAudience());
 
             if(events.size() > 0) {
                 responseMessages.add(HandledMessage.builder().text("Muito obrigado por utilizar o Solidarizr!\nAbaixo serão enviados os eventos encontrados! :)")
@@ -97,13 +110,7 @@ public class IntentHandler {
                         .firstOrUnique(Boolean.TRUE).build());
             }
 
-            interactionService.save(currentInteraction.get().withClosed(true));
-
-        } else {
-            responseMessages.add(HandledMessage.builder().text("Ocorreu algum problema. Por favor envie \"Oi!\" e tente novamente!")
-                    .firstOrUnique(Boolean.TRUE).build());
-        }
-
+            interactionService.save(currentInteraction.withClosed(true));
 
 
         return responseMessages;
@@ -117,12 +124,12 @@ public class IntentHandler {
         return responseMessage;
     }
 
-    private HandledMessage getAskCategoriesResponseMessage(Optional<Interaction> currentInteraction) {
+    private HandledMessage getAskCategoriesResponseMessage(Interaction currentInteraction) {
         HandledMessage responseMessage;
         List<Category> categories;
 
-        if(currentInteraction.isPresent() && currentInteraction.get().isTargetAudienceFilled()){
-            categories = solidarizrManagerConnector.findCategoryByEventsWithTargetAudienceId(currentInteraction.get().getTargetAudience());
+        if(currentInteraction.isTargetAudienceFilled()){
+            categories = solidarizrManagerConnector.findCategoryByEventsWithTargetAudienceId(currentInteraction.getTargetAudience());
         } else {
             categories = solidarizrManagerConnector.getAllCategories();
         }
@@ -140,12 +147,12 @@ public class IntentHandler {
         return responseMessage;
     }
 
-    private HandledMessage getAskTargetAudienceResponseMessage(Optional<Interaction> currentInteraction) {
+    private HandledMessage getAskTargetAudienceResponseMessage(Interaction currentInteraction) {
         HandledMessage responseMessage;
         List<TargetAudience> targetAudienceList;
 
-        if(currentInteraction.isPresent() && currentInteraction.get().isCategoryFilled()){
-            targetAudienceList = solidarizrManagerConnector.findTargetAudiencesByEventsWithCategoryId(currentInteraction.get().getCategory());
+        if(currentInteraction.isCategoryFilled()){
+            targetAudienceList = solidarizrManagerConnector.findTargetAudiencesByEventsWithCategoryId(currentInteraction.getCategory());
         } else {
             targetAudienceList = solidarizrManagerConnector.getAllTargetAudiences();
         }

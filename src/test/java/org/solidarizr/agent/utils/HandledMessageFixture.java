@@ -4,6 +4,14 @@ import org.solidarizr.agent.messageHandler.HandledMessage;
 import org.solidarizr.agent.messageHandler.Messages;
 
 public class HandledMessageFixture {
+    public static final HandledMessage FIXED_EVENT_RESPONSE_HANDLE_MESSAGE_WHEN_HAVE_EVENTS = HandledMessage.builder()
+            .text("Muito obrigado por utilizar o Solidarizr!\nAbaixo serão enviados os eventos encontrados! :)")
+            .firstOrUnique(Boolean.TRUE).build();
+
+    public static final HandledMessage FIXED_EVENT_RESPONSE_HANDLE_MESSAGE_WHEN_HAVE_NOT_EVENTS = HandledMessage.builder()
+            .text("Não encontramos projetos para os dados que informaste :/")
+            .firstOrUnique(Boolean.TRUE).build();
+
     public static final HandledMessage HANDLED_MESSAGE_FROM_EVENT_WITH_ALL_INFORMATIONS_FILLED = HandledMessage.builder()
             .text(String.format(Messages.EventText.NAME +
                             Messages.EventText.DESCRIPTION +
