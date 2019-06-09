@@ -54,6 +54,15 @@ public class IntentHandlerTest {
     }
 
     @Test
+    public void respond_create_projet_message_when_receive_create_projet_intent(){
+        HandledMessage greetingsHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.CREATE_PROJECTS, ChatFixture.CHAT_WITH_JUST_ID.getId()).get(0);
+
+        assertThat(greetingsHandledMessage.getText()).isEqualTo(Intent.CREATE_PROJECTS.getResponse());
+        assertThat(greetingsHandledMessage.getKeyboard()).isNull();
+    }
+
+
+    @Test
     public void respond_ask_target_audience_message_with_all_target_audiences_when_receive_ask_target_audience_intent_without_category_defined(){
         when(interactionService.getOpenInteractionFromChat(ChatFixture.CHAT_WITH_OPEN_INTERACTION_WITHOUT_CATEGORY.getId()))
                 .thenReturn(Optional.of(InteractionFixture.OPEN_INTERACTION_FROM_DB_WITHOUT_CATEGORY));
