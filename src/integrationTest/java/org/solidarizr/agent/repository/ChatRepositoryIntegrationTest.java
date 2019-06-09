@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles(value = "local")
+@ActiveProfiles("test")
 public class ChatRepositoryIntegrationTest {
 
     @Autowired

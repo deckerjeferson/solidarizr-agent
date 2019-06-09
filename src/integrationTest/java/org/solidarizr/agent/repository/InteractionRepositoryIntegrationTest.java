@@ -19,7 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@ActiveProfiles("local")
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 public class InteractionRepositoryIntegrationTest {
 
