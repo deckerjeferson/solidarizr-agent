@@ -11,9 +11,4 @@ public class Messages {
         public static final String CATEGORY = "\n<b>Categoria:</b> %s\n";
         public static final String TARGET_AUDIENCE = "<b>Público Alvo:</b> %s\n";
     }
-
-    public static class IntentCallbacks {
-        public static final String DEFINDED_TARGET_AUDIENCE = "defined_target_audience=%s";
-        public static final String DEFINED_CATEGORY = "defined_category=%s";
-    }
 }
