@@ -7,6 +7,7 @@ import org.solidarizr.agent.connector.model.Category;
 import org.solidarizr.agent.connector.model.Event;
 import org.solidarizr.agent.connector.model.TargetAudience;
 import org.solidarizr.agent.messageHandler.HandledMessage;
+import org.solidarizr.agent.messageHandler.Messages;
 import org.solidarizr.agent.messageHandler.intent.transformers.HandledMessageTransformer;
 import org.solidarizr.agent.messageHandler.intent.transformers.KeyboardOptionTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +91,7 @@ public class IntentHandler {
 
     private List<HandledMessage> getCreateProjectsResponse() {
         return List.of(HandledMessage.builder()
-                .text(CREATE_PROJECTS.getResponse())
+                .text(Messages.Responses.CREATE_PROJECTS)
                 .firstOrUnique(Boolean.TRUE)
                 .build());
     }
@@ -102,11 +103,11 @@ public class IntentHandler {
                     , currentInteraction.getTargetAudience());
 
             if(events.size() > 0) {
-                responseMessages.add(HandledMessage.builder().text("Muito obrigado por utilizar o Solidarizr!\nAbaixo serão enviados os eventos encontrados! :)")
+                responseMessages.add(HandledMessage.builder().text(Messages.Responses.THANKS_FOR_USING_SOLIDARIZE_TO_FIND_PROJECTS)
                         .firstOrUnique(Boolean.TRUE).build());
                 responseMessages.addAll(HandledMessageTransformer.from(events));
             } else {
-                responseMessages.add(HandledMessage.builder().text("Não encontramos projetos para os dados que informaste :/")
+                responseMessages.add(HandledMessage.builder().text(Messages.Responses.WE_HAVE_NOT_FOUND_ANY_PROJECTS)
                         .firstOrUnique(Boolean.TRUE).build());
             }
 
@@ -119,7 +120,7 @@ public class IntentHandler {
     private HandledMessage getUnknownResponseMessage() {
         HandledMessage responseMessage;
         responseMessage = HandledMessage.builder()
-                .text(UNKNOWN.getResponse())
+                .text(Messages.Responses.UNKNOWN)
                 .build();
         return responseMessage;
     }
@@ -137,7 +138,7 @@ public class IntentHandler {
         List<HandledMessage.Keyboard.Option> categoriesOption = KeyboardOptionTransformer.fromCategoryList(categories);
 
         responseMessage = HandledMessage.builder()
-                .text(ASK_CATEGORIES.getResponse())
+                .text(Messages.Responses.ASK_CATEGORY)
                 .keyboard(HandledMessage.Keyboard.builder()
                         .options(categoriesOption)
                         .build())
@@ -160,7 +161,7 @@ public class IntentHandler {
         List<HandledMessage.Keyboard.Option> targetAudienceOptions = KeyboardOptionTransformer.fromTargetAudienceList(targetAudienceList);
 
         responseMessage = HandledMessage.builder()
-                .text(ASK_TARGET_AUDIENCE.getResponse())
+                .text(Messages.Responses.ASK_TARGET_AUDIENCE)
                 .keyboard(HandledMessage.Keyboard.builder()
                         .options(targetAudienceOptions)
                         .build())
@@ -173,7 +174,7 @@ public class IntentHandler {
     private HandledMessage getStartOrGreetingsHandledMessage(Intent start) {
         HandledMessage responseMessage;
         responseMessage = HandledMessage.builder()
-                .text(start.getResponse())
+                .text(Messages.Responses.START)
                 .keyboard(HandledMessage.Keyboard.builder()
                         .option(StaticOptions.YES.getOption())
                         .option(StaticOptions.NO.getOption())

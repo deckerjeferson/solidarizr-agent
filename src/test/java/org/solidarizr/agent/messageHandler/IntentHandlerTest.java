@@ -41,7 +41,7 @@ public class IntentHandlerTest {
     public void respond_greetings_message_when_receive_greetings_intent(){
         HandledMessage greetingsHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.GREETING, ChatFixture.CHAT_WITH_JUST_ID.getId()).get(0);
 
-        assertThat(greetingsHandledMessage.getText()).isEqualTo(Intent.GREETING.getResponse());
+        assertThat(greetingsHandledMessage.getText()).isEqualTo(Messages.Responses.START);
         assertThat(greetingsHandledMessage.getKeyboard().getOptions()).containsExactly(StaticOptions.YES.getOption(), StaticOptions.NO.getOption());
     }
 
@@ -49,7 +49,7 @@ public class IntentHandlerTest {
     public void respond_start_message_when_receive_start_intent(){
         HandledMessage startHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.START, ChatFixture.CHAT_WITH_JUST_ID.getId()).get(0);
 
-        assertThat(startHandledMessage.getText()).isEqualTo(Intent.START.getResponse());
+        assertThat(startHandledMessage.getText()).isEqualTo(Messages.Responses.START);
         assertThat(startHandledMessage.getKeyboard().getOptions()).containsExactly(StaticOptions.YES.getOption(), StaticOptions.NO.getOption());
     }
 
@@ -57,7 +57,7 @@ public class IntentHandlerTest {
     public void respond_create_projet_message_when_receive_create_projet_intent(){
         HandledMessage greetingsHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.CREATE_PROJECTS, ChatFixture.CHAT_WITH_JUST_ID.getId()).get(0);
 
-        assertThat(greetingsHandledMessage.getText()).isEqualTo(Intent.CREATE_PROJECTS.getResponse());
+        assertThat(greetingsHandledMessage.getText()).isEqualTo(Messages.Responses.CREATE_PROJECTS);
         assertThat(greetingsHandledMessage.getKeyboard()).isNull();
     }
 
@@ -77,7 +77,7 @@ public class IntentHandlerTest {
 
         HandledMessage askTargetAudienceHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.ASK_TARGET_AUDIENCE, ChatFixture.CHAT_WITH_OPEN_INTERACTION_WITHOUT_CATEGORY.getId()).get(0);
 
-        assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Intent.ASK_TARGET_AUDIENCE.getResponse());
+        assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Messages.Responses.ASK_TARGET_AUDIENCE);
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions().size()).isEqualTo(2);
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions()).isEqualTo(expectedOptions);
         verify(solidarizrManagerConnector, never()).findTargetAudiencesByEventsWithCategoryId(any(Integer.class));
@@ -97,7 +97,7 @@ public class IntentHandlerTest {
 
         HandledMessage askTargetAudienceHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.ASK_TARGET_AUDIENCE, ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId()).get(0);
 
-        assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Intent.ASK_TARGET_AUDIENCE.getResponse());
+        assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Messages.Responses.ASK_TARGET_AUDIENCE);
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions().size()).isEqualTo(1);
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions()).isEqualTo(expectedOptions);
         verify(solidarizrManagerConnector, never()).getAllTargetAudiences();
@@ -119,7 +119,7 @@ public class IntentHandlerTest {
 
         HandledMessage askTargetAudienceHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.ASK_CATEGORIES, ChatFixture.CHAT_WITH_OPEN_INTERACTION_WITHOUT_TARGET_AUDIENCE.getId()).get(0);
 
-        assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Intent.ASK_CATEGORIES.getResponse());
+        assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Messages.Responses.ASK_CATEGORY);
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions().size()).isEqualTo(2);
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions()).isEqualTo(expectedOptions);
         verify(solidarizrManagerConnector, never()).findCategoryByEventsWithTargetAudienceId(any(Integer.class));
@@ -139,7 +139,7 @@ public class IntentHandlerTest {
 
         HandledMessage askTargetAudienceHandledMessage = intentHandler.getResponseBasedOnIntent(Intent.ASK_CATEGORIES, ChatFixture.CHAT_WITH_OPEN_INTERACTION_ALL_INFORMATIONS_FILLED.getId()).get(0);
 
-        assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Intent.ASK_CATEGORIES.getResponse());
+        assertThat(askTargetAudienceHandledMessage.getText()).isEqualTo(Messages.Responses.ASK_CATEGORY);
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions().size()).isEqualTo(1);
         assertThat(askTargetAudienceHandledMessage.getKeyboard().getOptions()).isEqualTo(expectedOptions);
         verify(solidarizrManagerConnector, never()).getAllCategories();
@@ -150,7 +150,7 @@ public class IntentHandlerTest {
     @Test
     public void respond_not_understood_message_when_unknown_intent(){
         HandledMessage unknownHandledMessaged = intentHandler.getResponseBasedOnIntent(Intent.UNKNOWN, ChatFixture.CHAT_WITH_JUST_ID.getId()).get(0);
-        assertThat(unknownHandledMessaged.getText()).isEqualTo(Intent.UNKNOWN.getResponse());
+        assertThat(unknownHandledMessaged.getText()).isEqualTo(Messages.Responses.UNKNOWN);
     }
 
     @Test

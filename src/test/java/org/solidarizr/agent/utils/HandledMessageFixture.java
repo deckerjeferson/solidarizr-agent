@@ -5,11 +5,11 @@ import org.solidarizr.agent.messageHandler.Messages;
 
 public class HandledMessageFixture {
     public static final HandledMessage FIXED_EVENT_RESPONSE_HANDLE_MESSAGE_WHEN_HAVE_EVENTS = HandledMessage.builder()
-            .text("Muito obrigado por utilizar o Solidarizr!\nAbaixo serão enviados os eventos encontrados! :)")
+            .text(Messages.Responses.THANKS_FOR_USING_SOLIDARIZE_TO_FIND_PROJECTS)
             .firstOrUnique(Boolean.TRUE).build();
 
     public static final HandledMessage FIXED_EVENT_RESPONSE_HANDLE_MESSAGE_WHEN_HAVE_NOT_EVENTS = HandledMessage.builder()
-            .text("Não encontramos projetos para os dados que informaste :/")
+            .text(Messages.Responses.WE_HAVE_NOT_FOUND_ANY_PROJECTS)
             .firstOrUnique(Boolean.TRUE).build();
 
     public static final HandledMessage HANDLED_MESSAGE_FROM_EVENT_WITH_ALL_INFORMATIONS_FILLED = HandledMessage.builder()

@@ -2,6 +2,19 @@ package org.solidarizr.agent.messageHandler;
 
 public class Messages {
 
+    public static class Responses{
+        public static final String START = "Olá! \nEu sou o Solidarize! :D\nEstou aqui para te ajudar a encontrar um projeto voluntário que tenha a sua cara! :) \nVocê gostaria de procurar um projeto voluntário?";
+        public static final String GREETINGS = "Olá! \nVocê gostaria de procurar um projeto voluntário?";
+        public static final String UNKNOWN = "Desculpe, não entendi o que você falou.";
+        public static final String ASK_TARGET_AUDIENCE = "Legal! Pode selecionar abaixo o público alvo que mais te interessa! :)";
+        public static final String ASK_CATEGORY = "Ok! Agora que você escolheu seu público alvo, favor escolha a categoria do projeto de voluntariado";
+        public static final String CREATE_PROJECTS = "Olá! Ainda estamos desenvolvendo a opção para cadastrar projetos voluntários pelo Bot!\nPara realizar cadastros de projetos enquanto esta funcionalidade não está disponível, por favor, utilize o formulário a seguir: https://forms.gle/KgpyvsU9yL1iyJzBA !\nMuito obrigado! <3";
+        public static final String THANKS_FOR_USING_SOLIDARIZE_TO_FIND_PROJECTS = "Muito obrigado por utilizar o Solidarizr!\nAbaixo serão enviados os eventos encontrados! :)";
+        public static final String WE_HAVE_NOT_FOUND_ANY_PROJECTS = "Não encontramos projetos para os dados que informaste :/";
+
+
+    }
+
     public static class EventText {
         public static final String NAME = "<b>Nome:</b> %s\n";
         public static final String DESCRIPTION = "<b>Descrição:</b> %s\n";

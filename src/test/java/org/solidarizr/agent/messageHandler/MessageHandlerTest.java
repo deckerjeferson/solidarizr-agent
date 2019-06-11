@@ -47,7 +47,7 @@ public class MessageHandlerTest {
     @Test
     public void receive_message_and_respond_with_keyboard(){
         HandledMessage expected = HandledMessage.builder()
-                .text(Intent.GREETING.getResponse())
+                .text(Messages.Responses.START)
                 .firstOrUnique(true)
                 .keyboard(HandledMessage.Keyboard.builder()
                             .option(StaticOptions.YES.getOption())
@@ -72,9 +72,4 @@ public class MessageHandlerTest {
         assertThat(handledMessage.size()).isEqualTo(1);
         assertThat(handledMessage.get(0)).isEqualTo(expected);
     }
-
-    @Test
-    public void receive_message_id_save_in_db_and_respond_with_keyboard(){
-    }
-
 }
