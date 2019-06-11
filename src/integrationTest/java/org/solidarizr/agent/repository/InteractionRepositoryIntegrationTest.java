@@ -13,6 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +46,11 @@ public class InteractionRepositoryIntegrationTest {
         Chat chat = Chat.builder().id(1L).build();
         chatRepository.save(chat);
 
-        Interaction interaction = Interaction.builder().chat(chat).closed(Boolean.FALSE).build();
+        Interaction interaction = Interaction.builder()
+                .chat(chat)
+                .closed(Boolean.FALSE)
+                .creationDate(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())).build();
+
         Interaction savedInteraction = repository.save(interaction);
 
         assertThat(savedInteraction.getId()).isNotNull();
@@ -62,7 +69,9 @@ public class InteractionRepositoryIntegrationTest {
                 .chat(chat)
                 .category(1)
                 .targetAudience(1)
+                .creationDate(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()))
                 .closed(Boolean.TRUE).build();
+
         Interaction savedInteraction = repository.save(interaction);
 
         assertThat(savedInteraction.getId()).isNotNull();

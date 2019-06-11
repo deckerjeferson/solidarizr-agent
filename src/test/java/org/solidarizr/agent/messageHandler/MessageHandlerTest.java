@@ -65,7 +65,7 @@ public class MessageHandlerTest {
     @Test
     public void receive_message_and_respond_without_keyboard(){
         HandledMessage expected = HandledMessage.builder()
-                .text("Desculpe, não entendi o que você falou.").build();
+                .text(Messages.Responses.UNKNOWN).build();
 
         List<HandledMessage> handledMessage = messageHandler.handle(chatId,"AKSJDADJHASJDHA");
 

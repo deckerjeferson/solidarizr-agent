@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.Wither;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -22,6 +23,7 @@ public class Interaction {
     private Integer category;
     private Integer targetAudience;
     private Boolean closed;
+    private Date creationDate;
 
     @ManyToOne
     @JoinColumn(name = "chat")

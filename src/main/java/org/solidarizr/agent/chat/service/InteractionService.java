@@ -6,6 +6,9 @@ import org.solidarizr.agent.chat.repository.model.Interaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +27,8 @@ public class InteractionService {
 
         Interaction newInteraction = Interaction.builder()
                 .chat(chat)
-                .closed(Boolean.FALSE).build();
+                .closed(Boolean.FALSE)
+                .creationDate(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())).build();
 
         return interactionRepository.save(newInteraction);
 
